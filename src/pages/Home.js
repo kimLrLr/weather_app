@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { getWeather } from "../api";
 import styled from "styled-components";
+import { useCurrentWeather } from "../lib/useCurrentWeather";
+import { Loading } from "../components/Loading";
 
 const Wrap = styled.div`
   max-width: 400px;
@@ -69,29 +71,36 @@ const Con = styled.div`
 `;
 
 export const Home = () => {
+  const { lat, lon } = useCurrentWeather();
+  console.log(lat, lon);
+
   const { data, isLoading } = useQuery({
-    queryKey: ["weather"],
+    queryKey: ["weather", lat, lon],
     queryFn: getWeather,
   });
-  // => api에 요청할 때 사용하는 hook
-  // => 비동기 사용시 상태 관리하는 hook
-  // => useQuery를 사용할땐 반드시 QueryClientProvider을 설정해줘야함
+  // =>api에 요청할때 사용하는 hook
+  // =>비동기 통신 사용시 상태관리하는 hook
+  // =>useQuery를 사용할땐 반드시 QueryClientProvider를 설정해줘야 됨
 
-  const {
-    name,
-    main: { temp },
-  } = data;
+  console.log(data);
 
-  console.log(isLoading);
+  // const {
+  //   name,
+  //   main: { temp },
+  // } = data;
 
   return (
     <>
       {isLoading ? (
-        "loading"
+        <Loading />
       ) : (
         <Wrap>
-          <Location>{name}</Location>
+          {/* <Location>{name}</Location>
           <Temp>{Math.round(temp)}°</Temp>
+          <Desc>{data?.weather[0]?.description}</Desc> */}
+
+          <Location>{data?.name}</Location>
+          <Temp>{Math.round(data?.main?.temp)}°</Temp>
           <Desc>{data?.weather[0]?.description}</Desc>
 
           <Separ></Separ>
