@@ -19,7 +19,7 @@ const Spinner = styled.div`
   height: 100px;
   border-radius: 50%;
   border: 10px solid salmon;
-  border-color: salmon transparent transparent transparent;
+  border-color: #a4ccff transparent transparent transparent;
   animation: ${LoadingAni} 1s infinite;
 `;
 
